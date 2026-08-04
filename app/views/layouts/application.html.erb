@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Pokemon of the Day</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="A simple daily Pokémon feature built with Ruby on Rails and PokeAPI.">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
+

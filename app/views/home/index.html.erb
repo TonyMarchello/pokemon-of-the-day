@@ -1,0 +1,73 @@
+<main class="page-shell">
+  <section class="hero">
+    <p class="eyebrow">Pokemon of the Day</p>
+    <h1>Today's featured Pokemon</h1>
+    <p class="hero__date">Date: <%= formatted_date(@featured_date) %></p>
+  </section>
+
+  <% if @error_message.present? %>
+    <div class="notice notice--error">
+      <%= @error_message %>
+    </div>
+  <% end %>
+
+  <% if @featured_pokemon.present? %>
+    <section class="pokemon-card" aria-label="Featured Pokemon details">
+      <div class="pokemon-card__art">
+        <% if @featured_pokemon.image_url.present? %>
+          <%= image_tag @featured_pokemon.image_url, alt: "#{@featured_pokemon.name} artwork", class: "pokemon-card__image" %>
+        <% else %>
+          <div class="pokemon-card__placeholder">No artwork available</div>
+        <% end %>
+      </div>
+
+      <div class="pokemon-card__content">
+        <p class="pokemon-card__number">Pokedex No. <%= @featured_pokemon.id %></p>
+        <h2><%= @featured_pokemon.name %></h2>
+
+        <p class="pokemon-card__types">
+          <span class="label">Type</span>
+          <%= @featured_pokemon.types.join(", ") %>
+        </p>
+
+        <dl class="pokemon-grid">
+          <div class="pokemon-grid__item">
+            <dt>Height</dt>
+            <dd><%= display_height(@featured_pokemon.height_meters) %></dd>
+          </div>
+
+          <div class="pokemon-grid__item">
+            <dt>Weight</dt>
+            <dd><%= display_weight(@featured_pokemon.weight_kg) %></dd>
+          </div>
+
+          <div class="pokemon-grid__item">
+            <dt>Base experience</dt>
+            <dd><%= @featured_pokemon.base_experience %></dd>
+          </div>
+        </dl>
+
+        <section class="stats">
+          <h3>Basic stats</h3>
+          <div class="stats__list">
+            <div class="stat-pill">
+              <span class="stat-pill__label">HP</span>
+              <span class="stat-pill__value"><%= @featured_pokemon.stats[:hp] %></span>
+            </div>
+
+            <div class="stat-pill">
+              <span class="stat-pill__label">Attack</span>
+              <span class="stat-pill__value"><%= @featured_pokemon.stats[:attack] %></span>
+            </div>
+
+            <div class="stat-pill">
+              <span class="stat-pill__label">Defense</span>
+              <span class="stat-pill__value"><%= @featured_pokemon.stats[:defense] %></span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  <% end %>
+</main>
+
