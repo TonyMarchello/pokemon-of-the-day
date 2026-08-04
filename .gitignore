@@ -1,0 +1,13 @@
+.bundle
+/log/*
+!/log/.keep
+/tmp/*
+!/tmp/.keep
+/public/assets
+/public/packs
+/node_modules
+/.idea
+/.env
+/.DS_Store
+.byebug_history
+
