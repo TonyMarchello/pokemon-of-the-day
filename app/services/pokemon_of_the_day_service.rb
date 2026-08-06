@@ -26,8 +26,7 @@ class PokemonOfTheDayService
 
   def call
     total_pokemon = fetch_total_pokemon_count
-    featured_id = featured_pokemon_id(total_pokemon)
-    pokemon_data = fetch_pokemon(featured_id)
+    pokemon_data = fetch_pokemon(featured_pokemon_offset(total_pokemon))
 
     Pokemon.new(
       id: pokemon_data.fetch("id"),
@@ -54,18 +53,28 @@ class PokemonOfTheDayService
     response.fetch("count")
   end
 
-  def featured_pokemon_id(total_pokemon)
-    # Turn today's date into a repeatable integer, then keep it inside the API's range.
+  def featured_pokemon_offset(total_pokemon)
+    # Turn today's date into a repeatable zero-based offset inside the API's range.
     seed = @date.strftime("%Y%m%d").to_i
-    (seed % total_pokemon) + 1
+    seed % total_pokemon
   end
 
-  def fetch_pokemon(id)
-    response = self.class.get("/pokemon/#{id}", timeout: 5)
-    return response.parsed_response if response.success?
+  def fetch_pokemon(offset)
+    response = self.class.get("/pokemon?limit=1&offset=#{offset}", timeout: 5)
+    raise "PokeAPI pokemon list request failed" unless response.success?
+
+    pokemon_entry = response.fetch("results").first
+    raise "PokeAPI pokemon list was empty" if pokemon_entry.nil?
 
     Rails.logger.warn(
-      "PokeAPI pokemon lookup failed: status=#{response.code} body=#{response.body.to_s.tr("\n", " ")[0, 160]}"
+      "PokeAPI pokemon list entry resolved: name=#{pokemon_entry.fetch('name')} url=#{pokemon_entry.fetch('url')}"
+    )
+
+    pokemon_response = self.class.get(pokemon_entry.fetch("url"), timeout: 5)
+    return pokemon_response.parsed_response if pokemon_response.success?
+
+    Rails.logger.warn(
+      "PokeAPI pokemon lookup failed: status=#{pokemon_response.code} body=#{pokemon_response.body.to_s.tr("\n", " ")[0, 160]}"
     )
     raise "PokeAPI pokemon request failed"
 
