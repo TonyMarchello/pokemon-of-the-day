@@ -8,8 +8,8 @@ Rails.application.configure do
 
   # Render captures stdout/stderr, so send Rails logs there in production.
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger = ActiveSupport::TaggedLogging.new(ActiveSupport::Logger.new($stdout))
+    logger = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
-    config.logger = logger
+    config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 end
