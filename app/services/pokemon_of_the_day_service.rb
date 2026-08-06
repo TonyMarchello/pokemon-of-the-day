@@ -62,9 +62,13 @@ class PokemonOfTheDayService
 
   def fetch_pokemon(id)
     response = self.class.get("/pokemon/#{id}", timeout: 5)
-    raise "PokeAPI pokemon request failed" unless response.success?
+    return response.parsed_response if response.success?
 
-    response.parsed_response
+    Rails.logger.warn(
+      "PokeAPI pokemon lookup failed: status=#{response.code} body=#{response.body.to_s.tr("\n", " ")[0, 160]}"
+    )
+    raise "PokeAPI pokemon request failed"
+
   end
 
   def pokemon_image_url(pokemon_data)
@@ -87,4 +91,3 @@ class PokemonOfTheDayService
     value.to_s.split("-").map(&:capitalize).join(" ")
   end
 end
-
