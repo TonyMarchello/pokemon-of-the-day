@@ -10,5 +10,9 @@ module ApplicationHelper
   def display_weight(value_in_kilograms)
     "#{format('%.1f', value_in_kilograms)} kg"
   end
-end
 
+  def formatted_hour(date_time)
+    hour_text = date_time.strftime("%I:%M %p").sub(/^0/, "")
+    "#{hour_text} #{date_time.strftime('%Z')}"
+  end
+end

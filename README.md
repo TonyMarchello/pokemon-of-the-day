@@ -1,11 +1,13 @@
 # Pokemon of the Day
 
-Pokemon of the Day is a small Ruby on Rails app that features one Pokemon each day using the public [PokeAPI](https://pokeapi.co/). The featured Pokemon is selected with a deterministic date-based algorithm, so everyone sees the same Pokemon on the same day without needing a database or background jobs.
+Pokemon of the Day is a small Ruby on Rails app that features one Pokemon each day and one Pokemon each hour using the public [PokeAPI](https://pokeapi.co/). The featured Pokemon is selected with deterministic time-based algorithms, so everyone sees the same Pokemon for the same day or hour without needing a database or background jobs.
 
 ## Features
 
 - Daily featured Pokemon
+- Hourly featured Pokemon
 - Deterministic date-based selection
+- Deterministic hour-based selection
 - Pokemon artwork, name, Pokedex number, types, height, weight, base experience, HP, Attack, and Defense
 - Server-rendered HTML with ERB templates
 - Simple, responsive design
@@ -46,9 +48,9 @@ flowchart LR
 
 1. The browser requests the homepage.
 2. `HomeController` handles the request.
-3. The controller calls `PokemonOfTheDayService`.
-4. The service uses today's UTC date to calculate a Pokemon ID.
-5. The service fetches Pokemon data from PokeAPI.
+3. The controller calls `PokemonOfTheDayService` and `PokemonOfTheHourService`.
+4. Each service uses a time-based seed to calculate a repeatable Pokemon position.
+5. The services fetch Pokemon data from PokeAPI.
 6. Rails renders the ERB view with the returned data.
 
 ## Local Installation
@@ -103,8 +105,11 @@ Manual settings if you prefer the dashboard:
 ## Project Structure
 
 - `app/controllers/home_controller.rb` controls the homepage request.
-- `app/services/pokemon_of_the_day_service.rb` talks to PokeAPI and applies the daily selection algorithm.
+- `app/services/pokemon_feature_service.rb` contains the shared PokeAPI fetching and Pokemon data mapping logic.
+- `app/services/pokemon_of_the_day_service.rb` applies the daily selection algorithm.
+- `app/services/pokemon_of_the_hour_service.rb` applies the hourly selection algorithm.
 - `app/views/home/index.html.erb` renders the homepage.
+- `app/views/home/_pokemon_feature.html.erb` renders the reusable Pokemon card partial.
 - `app/helpers/application_helper.rb` contains formatting helpers for the view.
 - `config/routes.rb` defines the homepage route.
 - `config/puma.rb` configures the web server for local development and Render.
@@ -135,4 +140,3 @@ The app keeps Rails concepts visible:
 - The route maps the browser to the controller action.
 
 That separation makes the project easy to explain in an interview and easy to extend later.
-

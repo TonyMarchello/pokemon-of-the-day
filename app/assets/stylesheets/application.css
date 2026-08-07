@@ -55,6 +55,25 @@ img {
   margin-bottom: 1.5rem;
 }
 
+.feature-section {
+  display: grid;
+  gap: 1rem;
+}
+
+.feature-section + .feature-section {
+  margin-top: 1.5rem;
+}
+
+.feature-section__header {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.feature-section__subtitle {
+  margin: 0;
+  color: var(--muted);
+}
+
 .eyebrow {
   margin: 0;
   text-transform: uppercase;
@@ -67,6 +86,12 @@ img {
 h1,
 h2,
 h3 {
+  margin: 0;
+  line-height: 1.05;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+h4 {
   margin: 0;
   line-height: 1.05;
   font-family: Georgia, "Times New Roman", serif;
@@ -199,6 +224,11 @@ h1 {
   font-size: 1.4rem;
 }
 
+.stats h4 {
+  margin-bottom: 0.75rem;
+  font-size: 1.4rem;
+}
+
 .stats__list {
   display: flex;
   flex-wrap: wrap;
@@ -254,4 +284,3 @@ h1 {
     width: 100%;
   }
 }
-

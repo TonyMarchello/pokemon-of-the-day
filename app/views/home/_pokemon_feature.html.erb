@@ -1,0 +1,74 @@
+<section class="feature-section">
+  <header class="feature-section__header">
+    <p class="eyebrow"><%= eyebrow %></p>
+    <h2><%= title %></h2>
+    <% if subtitle.present? %>
+      <p class="feature-section__subtitle"><%= subtitle %></p>
+    <% end %>
+  </header>
+
+  <% if error_message.present? %>
+    <div class="notice notice--error">
+      <%= error_message %>
+    </div>
+  <% end %>
+
+  <% if pokemon.present? %>
+    <section class="pokemon-card" aria-label="<%= title %> details">
+      <div class="pokemon-card__art">
+        <% if pokemon.image_url.present? %>
+          <%= image_tag pokemon.image_url, alt: "#{pokemon.name} artwork", class: "pokemon-card__image" %>
+        <% else %>
+          <div class="pokemon-card__placeholder">No artwork available</div>
+        <% end %>
+      </div>
+
+      <div class="pokemon-card__content">
+        <p class="pokemon-card__number">Pokedex No. <%= pokemon.id %></p>
+        <h3><%= pokemon.name %></h3>
+
+        <p class="pokemon-card__types">
+          <span class="label">Type</span>
+          <%= pokemon.types.join(", ") %>
+        </p>
+
+        <dl class="pokemon-grid">
+          <div class="pokemon-grid__item">
+            <dt>Height</dt>
+            <dd><%= display_height(pokemon.height_meters) %></dd>
+          </div>
+
+          <div class="pokemon-grid__item">
+            <dt>Weight</dt>
+            <dd><%= display_weight(pokemon.weight_kg) %></dd>
+          </div>
+
+          <div class="pokemon-grid__item">
+            <dt>Base experience</dt>
+            <dd><%= pokemon.base_experience %></dd>
+          </div>
+        </dl>
+
+        <section class="stats">
+          <h4>Basic stats</h4>
+          <div class="stats__list">
+            <div class="stat-pill">
+              <span class="stat-pill__label">HP</span>
+              <span class="stat-pill__value"><%= pokemon.stats[:hp] %></span>
+            </div>
+
+            <div class="stat-pill">
+              <span class="stat-pill__label">Attack</span>
+              <span class="stat-pill__value"><%= pokemon.stats[:attack] %></span>
+            </div>
+
+            <div class="stat-pill">
+              <span class="stat-pill__label">Defense</span>
+              <span class="stat-pill__value"><%= pokemon.stats[:defense] %></span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  <% end %>
+</section>
