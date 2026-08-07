@@ -5,7 +5,7 @@ Pokemon of the Day and Hour is a small Ruby on Rails app that features one Pokem
 ## Assessment Deliverables
 
 - Source code: [GitHub repository](https://github.com/TonyMarchello/pokemon-of-the-day)
-- Working deployment: [https://pokemon-of-the-day-and-hour.onrender.com](https://pokemon-of-the-day-and-hour.onrender.com)
+- Working deployment: [https://pokemon-of-the-day.onrender.com/](https://pokemon-of-the-day.onrender.com/)
 - Architecture diagram and limitations: see the sections below
 
 ## Features
