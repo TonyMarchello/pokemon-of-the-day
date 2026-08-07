@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: pokemon-of-the-day
+    name: pokemon-of-the-day-and-hour
     runtime: ruby
     plan: free
     branch: main
@@ -15,4 +15,3 @@ services:
         value: "true"
       - key: WEB_CONCURRENCY
         value: "1"
-

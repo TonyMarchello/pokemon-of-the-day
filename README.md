@@ -1,6 +1,12 @@
-# Pokemon of the Day
+# Pokemon of the Day and Hour
 
-Pokemon of the Day is a small Ruby on Rails app that features one Pokemon each day and one Pokemon each hour using the public [PokeAPI](https://pokeapi.co/). The featured Pokemon is selected with deterministic time-based algorithms, so everyone sees the same Pokemon for the same day or hour without needing a database or background jobs.
+Pokemon of the Day and Hour is a small Ruby on Rails app that features one Pokemon each day and one Pokemon each hour using the public [PokeAPI](https://pokeapi.co/). The featured Pokemon is selected with deterministic time-based algorithms, so everyone sees the same Pokemon for the same day or hour without needing a database or background jobs.
+
+## Assessment Deliverables
+
+- Source code: [GitHub repository](https://github.com/TonyMarchello/pokemon-of-the-day)
+- Working deployment: [https://pokemon-of-the-day-and-hour.onrender.com](https://pokemon-of-the-day-and-hour.onrender.com)
+- Architecture diagram and limitations: see the sections below
 
 ## Features
 
@@ -43,6 +49,13 @@ flowchart LR
   Render --> RailsApp[Ruby on Rails application]
   RailsApp --> Browser[Public URL in the browser]
 ```
+
+Current design limitations:
+
+- The app depends on the public PokeAPI, so an outage or slow response from that service affects the homepage.
+- The free Render plan can cold-start after inactivity, so the first request may be slower.
+- The app does not cache API responses yet, which keeps the design simple but less efficient.
+- There are no background jobs, which keeps the architecture small but means everything happens on request.
 
 ## How It Works
 
