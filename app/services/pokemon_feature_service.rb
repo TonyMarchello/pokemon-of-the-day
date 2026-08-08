@@ -6,7 +6,7 @@ class PokemonFeatureService
   base_uri "https://pokeapi.co/api/v2"
 
   Pokemon = Struct.new(
-    :id,
+    :pokedex_number,
     :name,
     :image_url,
     :types,
@@ -39,7 +39,7 @@ class PokemonFeatureService
 
   def build_pokemon(pokemon_data)
     Pokemon.new(
-      id: pokemon_data.fetch("id"),
+      pokedex_number: national_pokedex_number(pokemon_data),
       name: titleize_api_name(pokemon_data.fetch("name")),
       image_url: pokemon_image_url(pokemon_data),
       types: pokemon_data.fetch("types").map { |entry| titleize_api_name(entry.fetch("type").fetch("name")) },
@@ -84,6 +84,21 @@ class PokemonFeatureService
   def pokemon_image_url(pokemon_data)
     pokemon_data.dig("sprites", "other", "official-artwork", "front_default") ||
       pokemon_data.dig("sprites", "front_default")
+  end
+
+  def national_pokedex_number(pokemon_data)
+    species_url = pokemon_data.dig("species", "url")
+    raise "PokeAPI species URL missing" if species_url.nil? || species_url.empty?
+
+    species_response = self.class.get(species_url, timeout: 5)
+    raise "PokeAPI species request failed" unless species_response.success?
+
+    species_data = species_response.parsed_response
+    national_entry = species_data.fetch("pokedex_numbers").find do |entry|
+      entry.dig("pokedex", "name") == "national"
+    end
+
+    national_entry ? national_entry.fetch("entry_number") : species_data.fetch("id")
   end
 
   def extract_basic_stats(stats)
